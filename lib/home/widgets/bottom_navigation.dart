@@ -10,13 +10,16 @@ class MoneyManagerBottomNavigation extends StatelessWidget {
       valueListenable: ScreenHome.selectedIndexNotifier,
       builder: ((BuildContext ctx, int updatedIndex, Widget? _) {
         return BottomNavigationBar(
-          selectedItemColor: Color.fromARGB(255, 9, 74, 240),
+           backgroundColor: Color.fromARGB(255, 29, 31, 43),
+          selectedItemColor: Color.fromARGB(255, 252, 253, 255),
+          unselectedItemColor: Color.fromARGB(153, 201, 198, 198),
           currentIndex: updatedIndex,
           onTap: (newIndex) {
             ScreenHome.selectedIndexNotifier.value = newIndex;
           },
-          items: [
+          items: const[
             BottomNavigationBarItem(
+             
               label: "Transactions",
               icon: Icon(
                 Icons.home,

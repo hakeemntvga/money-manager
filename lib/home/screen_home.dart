@@ -14,10 +14,6 @@ class ScreenHome extends StatelessWidget {
 
   static ValueNotifier<int> selectedIndexNotifier = ValueNotifier(0);
 
-  static ValueNotifier<double> incomeTotalNotifier = ValueNotifier(0);
-  static ValueNotifier<double> expenseTotalxpenseNotifier = ValueNotifier(0);
-  static ValueNotifier<double> totalAmountNotifier = ValueNotifier(0);
-
   final _pages = const [
     ScreenTransaction(),
     ScreenCategory(),
@@ -25,14 +21,15 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     //TransactionDB.instance.refresh();
+    //TransactionDB.instance.refresh();
     TransactionDB.instance.getTotal();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 237, 230, 230),
       appBar: AppBar(
-        //leading: Text("data"),
+        backgroundColor: Color.fromARGB(255, 29, 31, 43),
         title: const Text(
+          
           "MONEY MANAGER",
         ),
         centerTitle: true,
@@ -41,75 +38,21 @@ class ScreenHome extends StatelessWidget {
       body: Column(
         //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    ValueListenableBuilder(
-                        valueListenable: incomeTotalNotifier,
-                        builder: (BuildContext context, double updatedIncome,
-                            Widget? _) {
-                          return 
-                          Column(
-                            children: [
-                              const Text('Income'),
-                              const Divider(
-                                height: 10.0,
-                              ),
-                              Text(updatedIncome.toString()),
-                            ],
-                          );
-                        },),
-                  ],
-                ),
-                ValueListenableBuilder(
-                    valueListenable:expenseTotalxpenseNotifier,
-                    builder: (BuildContext context, double updatedExpense,
-                        Widget? _) {
-                      return
-                       Column(
-                        children: [
-                          const Text("Expense"),
-                          const Divider(
-                            height: 10.0,
-                          ),
-                          Text(updatedExpense.toString()),
-                        ],
-                      );
-                    },),
-                ValueListenableBuilder(
-                    valueListenable:totalAmountNotifier,
-                    builder:
-                        (BuildContext context, double updateTotal, Widget? _) {
-                      return Column(
-                        children: [
-                          const Text("Total"),
-                          const Divider(
-                            height: 10.0,
-                          ),
-                          Text(updateTotal.toString()),
-                        ],
-                      );
-                    }),
-              ],
-            ),
-          ),
           Expanded(
-            child: SafeArea(
-              child: ValueListenableBuilder(
-                valueListenable: selectedIndexNotifier,
-                builder: (BuildContext context, int updatedIndex, Widget? _) {
-                  return _pages[updatedIndex];
-                },
-              ),
-            )
-          ),
+              child: SafeArea(
+            child: ValueListenableBuilder(
+              valueListenable: selectedIndexNotifier,
+              builder: (BuildContext context, int updatedIndex, Widget? _) {
+                return _pages[updatedIndex];
+              },
+            ),
+          )),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        
+        backgroundColor: Color.fromARGB(255, 29, 31, 43),
         onPressed: () {
           if (selectedIndexNotifier.value == 0) {
             Navigator.of(context).pushNamed(ScreenAddTransaction.routName);

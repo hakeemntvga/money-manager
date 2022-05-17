@@ -167,6 +167,7 @@ Income/Expense
               height: 10.0,
             ),
             ElevatedButton(
+            //  style: ElevatedButton.styleFrom(primary: Color.fromARGB(255, 29, 31, 43)),
               onPressed: () {
                 addTransaction();
                 

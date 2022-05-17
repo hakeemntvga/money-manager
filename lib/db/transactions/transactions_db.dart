@@ -10,7 +10,7 @@ abstract class TransactionDBFunctions {
   Future<void> addTransaction(TransactionModel obj);
   Future<List<TransactionModel>> getAllTransaction();
   Future<void> deleteTransaction(String id);
-  Future<Map<String,double>>getTotal();
+  Future<Map<String, double>> getTotal();
 }
 
 class TransactionDB implements TransactionDBFunctions {
@@ -23,6 +23,14 @@ class TransactionDB implements TransactionDBFunctions {
   ValueNotifier<List<TransactionModel>> transactionListNotifier =
 
       ValueNotifier([]);
+
+       ValueNotifier<Map<String, double>> overviewDataNotifier = ValueNotifier(
+    {
+      "totalIncome": 0,
+      "totalExpense": 0,
+      "totalBalnce": 0,
+    },
+  );
 
     // final  ValueNotifier<double> incomeTotalNotifier = ValueNotifier(0);
     //   ValueNotifier<double> expenseTotalxpenseNotifier = ValueNotifier(0);
@@ -50,6 +58,13 @@ class TransactionDB implements TransactionDBFunctions {
     transactionListNotifier.value.clear();
     transactionListNotifier.value.addAll(_list);
     transactionListNotifier.notifyListeners();
+
+
+    final _overviewData = await getTotal();
+    overviewDataNotifier.value.clear();
+    overviewDataNotifier.value = _overviewData;
+    print(overviewDataNotifier.value);
+    overviewDataNotifier.notifyListeners();
   }
 
   // Future<void> totalIncomeAndExpense() async {
@@ -82,27 +97,24 @@ class TransactionDB implements TransactionDBFunctions {
     refresh();
   }
 
-  @override
+ @override
   Future<Map<String, double>> getTotal() async {
-   Map<String,double> _data = {
-     "totalIncome" : 0,
-    "totalExpence" : 0,
-    "totalBalnce"  : 0
-   };
-   final _transactions = await getAllTransaction();
-   _transactions.forEach((TransactionModel _transactions) { 
-     if(_transactions.category.type == CategoryType.income){
-       _data["totalIncome"] = _data["totalIncome"]! + _transactions.amount; 
-     }
-     else if(_transactions.category.type == CategoryType.exoense){
-       _data["totalExpense"] = _data['totalExpense']! + _transactions.amount;
-     }
-   });
-  //  incomeTotalNotifier.notifyListeners();
-  //  expenseTotalxpenseNotifier.notifyListeners();
-  //  totalAmountNotifier.notifyListeners();
-   
-   _data['totalBalace'] = _data['totalIncome']! - _data['totalExpense']!;
-   return _data;
+    Map<String, double> _data = {
+      "totalIncome": 0,
+      "totalExpense": 0,
+      "totalBalance": 0
+    };
+    final _transactions = await getAllTransaction();
+
+    _transactions.forEach((TransactionModel _transaction) {
+      if (_transaction.type == CategoryType.income) {
+        _data["totalIncome"] = _data["totalIncome"]! + _transaction.amount;
+      } else if (_transaction.type == CategoryType.exoense) {
+        _data["totalExpense"] = _data['totalExpense']! + _transaction.amount;
+      }
+    });
+
+    _data['totalBalance'] = _data['totalIncome']! - _data['totalExpense']!;
+    return _data;
   }
 }
